@@ -1,7 +1,11 @@
 {
   "name": "nanikasu",
   "private": true,
-  "workspaces": ["apps/*"],
+  "packageManager": "bun@1.1.0",
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
   "scripts": {
     "dev": "turbo run dev --parallel"
   },
