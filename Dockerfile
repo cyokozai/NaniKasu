@@ -1,26 +1,28 @@
-FROM node:20-alpine
+FROM node:20 AS dev
 
-RUN apk add --no-cache curl bash && \
-    npm install -g wrangler turbo bun
+SHELL [ "bash", "-c" ]
 
-WORKDIR /app
+ENV BUN_INSTALL=/root/.bun
+ENV PATH="${BUN_INSTALL}/bin:$PATH"
 
-COPY package.json ./
-COPY turbo.json ./
-RUN npm install
+WORKDIR /apps
 
-COPY apps ./apps
-WORKDIR /app/apps/frontend
-RUN npm install
+COPY ./apps/ .
 
-WORKDIR /app/apps/backend
-RUN npm install
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends curl git bash ca-certificates && \
+    curl -fsSL https://bun.sh/install | bash && \
+    npm install -g turbo wrangler && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* && \
+    bun --version > ./versions && \
+    node --version >> ./versions && \
+    npm --version >> ./versions && \
+    turbo --version >> ./versions && \
+    wrangler --version >> ./versions && \
+    cd ./frontend && \
+    bun install && \
+    cd ../backend && \
+    bun install
 
-# 作業用に戻す
-WORKDIR /app
-
-# ポート開放（Vite: 5173, Wrangler: 8787）
-EXPOSE 5173 8787
-
-# デフォルトは bash（docker-compose で起動コマンドを切り替える）
 CMD ["bash"]
