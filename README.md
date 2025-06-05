@@ -7,7 +7,7 @@ NaniKasu aims to transform Inventory management from a 'troublesome task' into a
 ```planetext
 my-app/
 ├── apps/
-│   ├── frontend/             # React + Vite (Bun or Node 対応可)
+│   ├── frontend/             # React + Vite
 │   │   ├── src/
 │   │   ├── index.html
 │   │   ├── vite.config.ts
@@ -15,11 +15,11 @@ my-app/
 │   │
 │   └── backend/              # Hono + Cloudflare Workers
 │       ├── src/
-│       │   └── index.ts      # Hono アプリ本体
-│       ├── wrangler.toml     # ← 🔥 ここに置く（Cloudflare Workerの定義）
+│       │   └── index.ts
+│       ├── wrangler.toml
 │       └── package.json
 │
-├── package.json              # （必要なら）ワークスペース共通設定
-├── turbo.json                # Turborepo 設定（任意）
-└── tsconfig.json             # 共通のTypeScript設定（optional）
+├── package.json
+├── turbo.json
+└── tsconfig.json
 ```

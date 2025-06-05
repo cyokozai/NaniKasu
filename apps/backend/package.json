@@ -1,0 +1,12 @@
+{
+  "name": "backend",
+  "scripts": {
+    "dev": "wrangler dev"
+  },
+  "dependencies": {
+    "hono": "^3.6.0"
+  },
+  "devDependencies": {
+    "wrangler": "^3.0.0"
+  }
+}

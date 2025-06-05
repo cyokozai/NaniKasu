@@ -1,0 +1,11 @@
+{
+  "name": "nanikasu",
+  "private": true,
+  "workspaces": ["apps/*"],
+  "scripts": {
+    "dev": "turbo run dev --parallel"
+  },
+  "devDependencies": {
+    "turbo": "^1.10.0"
+  }
+}
