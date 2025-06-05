@@ -3,7 +3,8 @@ services:
   dev:
     build: .
     volumes:
-      - ./apps/:/root/apps/
+      - ./apps/:/root/apps/:cached
+      - /root/apps/node_modules
     ports:
       - "5173:5173"   # frontend
       - "8787:8787"   # backend
