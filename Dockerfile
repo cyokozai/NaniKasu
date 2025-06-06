@@ -25,4 +25,6 @@ RUN apt -y update && \
     wrangler --version >> versions && \
     echo "Bun, Node, NPM, Turbo, and Wrangler installed successfully."
 
+RUN ls && ls ./frontend && ls ./backend
+
 CMD ["bash"]
