@@ -23,7 +23,7 @@ Cloudflare collects anonymous telemetry about your usage of Wrangler. Learn more
   ```
   {
     "name": "worker-name",
-    "compatibility_date": "2025-06-05",
+    "compatibility_date": "2025-06-06",
     "main": "src/index.ts"
   }
   ```
@@ -36,7 +36,7 @@ Cloudflare collects anonymous telemetry about your usage of Wrangler. Learn more
   ```
   {
     "name": "worker-name",
-    "compatibility_date": "2025-06-05",
+    "compatibility_date": "2025-06-06",
     "assets": {
       "directory": "./dist"
     }
@@ -45,5 +45,5 @@ Cloudflare collects anonymous telemetry about your usage of Wrangler. Learn more
   
 
 
-🪵  Logs were written to "/root/.config/.wrangler/logs/wrangler-2025-06-05_19-09-39_325.log"
+🪵  Logs were written to "/root/.config/.wrangler/logs/wrangler-2025-06-06_05-50-40_794.log"
 error: script "dev" exited with code 1
