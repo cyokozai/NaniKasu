@@ -1,21 +1,17 @@
 openapi: 3.1.0
 info:
-  title: NaniKasu API
-  version: 1.0.0
-  description: 備品管理アプリ NaniKasu のAPI仕様書
+  title: NaniKasu Inventory API
+  version: 1.0.1
+  description: 備品管理アプリ「NaniKasu」のアイテム操作用API
 
 servers:
-  - url: https://api.nanikasu.dev
-    description: 本番環境
-  - url: http://localhost:8787
-    description: 開発環境（Wrangler Dev）
+  - url: https://api.nanikasu.example.com
 
 paths:
   /items:
     get:
-      summary: 備品の一覧を取得する
-      tags:
-        - Items
+      summary: 備品一覧を取得
+      operationId: listItems
       responses:
         '200':
           description: 一覧取得成功
@@ -25,11 +21,9 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Item'
-
     post:
-      summary: 備品を新規登録する
-      tags:
-        - Items
+      summary: 備品を新規作成
+      operationId: createItem
       requestBody:
         required: true
         content:
@@ -38,19 +32,20 @@ paths:
               $ref: '#/components/schemas/NewItem'
       responses:
         '201':
-          description: 登録成功
+          description: 作成成功
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Item'
         '400':
-          description: 入力エラー
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalError'
 
   /items/{itemId}:
     get:
-      summary: 備品の詳細を取得する
-      tags:
-        - Items
+      summary: 備品の詳細を取得
+      operationId: getItem
       parameters:
         - name: itemId
           in: path
@@ -59,36 +54,91 @@ paths:
             type: string
       responses:
         '200':
-          description: 詳細取得成功
+          description: 取得成功
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Item'
         '404':
-          description: 該当備品が見つからない
+          $ref: '#/components/responses/NotFound'
+
+    patch:
+      summary: 備品情報を更新
+      operationId: updateItem
+      parameters:
+        - name: itemId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateItem'
+      responses:
+        '200':
+          description: 更新成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    delete:
+      summary: 備品を削除
+      operationId: deleteItem
+      parameters:
+        - name: itemId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: 削除成功（No Content）
+        '404':
+          $ref: '#/components/responses/NotFound'
 
 components:
   schemas:
     Item:
       type: object
+      required:
+        - id
+        - name
+        - category_id
+        - status
+        - created_at
       properties:
         id:
           type: string
         name:
           type: string
-        category_id:
+        description:
           type: string
-        vendor_id:
-          type: string
+        quantity:
+          type: integer
         owner_id:
+          type: string
+        current_holder_id:
+          type: string
+        location:
           type: string
         status:
           type: string
           enum: [available, borrowed, maintenance]
-        description:
+        category_id:
           type: string
-          nullable: true
+        custom_fields:
+          type: object
         created_at:
+          type: string
+          format: date-time
+        updated_at:
           type: string
           format: date-time
 
@@ -96,19 +146,71 @@ components:
       type: object
       required:
         - name
-        - category_id
+        - quantity
+        - status
       properties:
         name:
           type: string
-        category_id:
+        description:
           type: string
-        vendor_id:
-          type: string
+        quantity:
+          type: integer
         owner_id:
+          type: string
+        current_holder_id:
+          type: string
+        location:
           type: string
         status:
           type: string
           enum: [available, borrowed, maintenance]
+        category_id:
+          type: string
+        custom_fields:
+          type: object
+
+    UpdateItem:
+      type: object
+      properties:
+        name:
+          type: string
         description:
           type: string
-          nullable: true
+        quantity:
+          type: integer
+        current_holder_id:
+          type: string
+        location:
+          type: string
+        status:
+          type: string
+        custom_fields:
+          type: object
+
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: integer
+
+  responses:
+    BadRequest:
+      description: 無効なリクエスト
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: 該当リソースが存在しない
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    InternalError:
+      description: サーバー内部エラー
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
