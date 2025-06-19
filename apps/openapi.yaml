@@ -103,6 +103,31 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 
+  /item_logs:
+    get:
+      summary: 備品ログ一覧を取得
+      operationId: listItemLogs
+      parameters:
+        - name: itemId
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: userId
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ログ一覧取得成功
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ItemLog'
+
 components:
   schemas:
     Item:
@@ -186,6 +211,30 @@ components:
           type: string
         custom_fields:
           type: object
+
+    ItemLog:
+      type: object
+      required:
+        - id
+        - item_id
+        - user_id
+        - action
+        - timestamp
+      properties:
+        id:
+          type: string
+        item_id:
+          type: string
+        user_id:
+          type: string
+        action:
+          type: string
+          enum: [borrowed, returned, updated, created, deleted]
+        details:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
 
     Error:
       type: object
