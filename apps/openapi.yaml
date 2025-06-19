@@ -7,11 +7,16 @@ info:
 servers:
   - url: https://api.nanikasu.example.com
 
+security:
+  - supabaseAuth: []
+
 paths:
   /items:
     get:
       summary: 備品一覧を取得
       operationId: listItems
+      security:
+        - supabaseAuth: []
       responses:
         '200':
           description: 一覧取得成功
@@ -24,6 +29,8 @@ paths:
     post:
       summary: 備品を新規作成
       operationId: createItem
+      security:
+        - supabaseAuth: [admin, manager]
       requestBody:
         required: true
         content:
@@ -46,6 +53,8 @@ paths:
     get:
       summary: 備品の詳細を取得
       operationId: getItem
+      security:
+        - supabaseAuth: []
       parameters:
         - name: itemId
           in: path
@@ -65,6 +74,8 @@ paths:
     patch:
       summary: 備品情報を更新
       operationId: updateItem
+      security:
+        - supabaseAuth: [admin, manager]
       parameters:
         - name: itemId
           in: path
@@ -91,6 +102,8 @@ paths:
     delete:
       summary: 備品を削除
       operationId: deleteItem
+      security:
+        - supabaseAuth: [admin]
       parameters:
         - name: itemId
           in: path
@@ -107,6 +120,8 @@ paths:
     get:
       summary: 備品ログ一覧を取得
       operationId: listItemLogs
+      security:
+        - supabaseAuth: [admin, manager]
       parameters:
         - name: itemId
           in: query
@@ -129,6 +144,12 @@ paths:
                   $ref: '#/components/schemas/ItemLog'
 
 components:
+  securitySchemes:
+    supabaseAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
   schemas:
     Item:
       type: object
