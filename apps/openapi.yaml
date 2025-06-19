@@ -1,0 +1,114 @@
+openapi: 3.1.0
+info:
+  title: NaniKasu API
+  version: 1.0.0
+  description: 備品管理アプリ NaniKasu のAPI仕様書
+
+servers:
+  - url: https://api.nanikasu.dev
+    description: 本番環境
+  - url: http://localhost:8787
+    description: 開発環境（Wrangler Dev）
+
+paths:
+  /items:
+    get:
+      summary: 備品の一覧を取得する
+      tags:
+        - Items
+      responses:
+        '200':
+          description: 一覧取得成功
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Item'
+
+    post:
+      summary: 備品を新規登録する
+      tags:
+        - Items
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewItem'
+      responses:
+        '201':
+          description: 登録成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+        '400':
+          description: 入力エラー
+
+  /items/{itemId}:
+    get:
+      summary: 備品の詳細を取得する
+      tags:
+        - Items
+      parameters:
+        - name: itemId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 詳細取得成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+        '404':
+          description: 該当備品が見つからない
+
+components:
+  schemas:
+    Item:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        category_id:
+          type: string
+        vendor_id:
+          type: string
+        owner_id:
+          type: string
+        status:
+          type: string
+          enum: [available, borrowed, maintenance]
+        description:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+
+    NewItem:
+      type: object
+      required:
+        - name
+        - category_id
+      properties:
+        name:
+          type: string
+        category_id:
+          type: string
+        vendor_id:
+          type: string
+        owner_id:
+          type: string
+        status:
+          type: string
+          enum: [available, borrowed, maintenance]
+        description:
+          type: string
+          nullable: true
