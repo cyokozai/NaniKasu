@@ -108,11 +108,5 @@ app.onError((err, c) => {
   return c.json({ message: "Internal Server Error" }, 500);
 });
 
-// Bunサーバーとして起動
-const port = process.env.PORT || 8787;
-console.log(`🚀 NaniKasu API server is running on http://localhost:${port}`);
-
-export default {
-  port,
-  fetch: app.fetch,
-};
+// Cloudflare Workers用のエクスポート
+export default app;
