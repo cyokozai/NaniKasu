@@ -1,12 +1,25 @@
 {
   "name": "backend",
   "scripts": {
-    "dev": "wrangler dev"
+    "dev": "wrangler dev",
+    "db:migrate": "drizzle-kit migrate",
+    "db:generate": "drizzle-kit generate",
+    "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
-    "hono": "^3.6.0"
+    "hono": "^3.6.0",
+    "@hono/node-server": "^1.8.0",
+    "drizzle-orm": "^0.29.0",
+    "postgres": "^3.4.0",
+    "jsonwebtoken": "^9.0.2",
+    "jose": "^5.1.0",
+    "zod": "^3.22.0"
   },
   "devDependencies": {
-    "wrangler": "^3.0.0"
+    "wrangler": "^3.0.0",
+    "drizzle-kit": "^0.20.0",
+    "@types/jsonwebtoken": "^9.0.5",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
   }
 }
