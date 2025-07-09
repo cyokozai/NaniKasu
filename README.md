@@ -40,15 +40,15 @@ NaniKasuは、備品管理を「面倒な作業」から「現場で完結する
 
     Frontend: React + Vite (Cloudflare Pages)  
     Backend: Hono (Cloudflare Workers)  
-    DB: PostgresQL
-    Auth: Supabase  
+    DB: PostgreSQL (Docker) + Drizzle ORM
+    Auth: Supabase Auth (JWT認証 + RBAC)  
 
 | 判断軸      | 結論                                   |
 | -------- | ------------------------------------ |
-| 実装速度     | Supabase + Hono が最速                  |
-| 保守性      | Supabase 管理画面で楽、Hono はシンプルコードベース     |
+| 実装速度     | Supabase Auth + Hono + Drizzle が最速    |
+| 保守性      | Supabase Auth管理画面で楽、Hono + Drizzle はシンプルコードベース |
 | デプロイの容易さ | Cloudflare Pages + Workers で統一デプロイ可能 |
-| 学習コスト    | Hono の方が Go よりも簡単（特に JS/TS に慣れていれば）  |
+| 学習コスト    | Hono + Drizzle の方が簡単（特に JS/TS に慣れていれば）  |
 
 - tree
 
@@ -61,10 +61,19 @@ my-app/
     │   ├── vite.config.ts
     │   └── package.json
     │
-    ├── backend/              # Hono + Cloudflare Workers
+    ├── backend/              # Hono + Cloudflare Workers + Drizzle ORM
     │   ├── src/
-    │   │   └── index.ts
+    │   │   ├── index.ts
+    │   │   ├── db/
+    │   │   │   ├── index.ts
+    │   │   │   └── schema.ts
+    │   │   ├── middleware/
+    │   │   │   └── auth.ts
+    │   │   └── routes/
+    │   │       ├── items.ts
+    │   │       └── item-logs.ts
     │   ├── wrangler.toml
+    │   ├── drizzle.config.ts
     │   └── package.json
     │
     ├── package.json
@@ -79,7 +88,7 @@ my-app/
 
 ### DB
 
-#### `users`
+
 
 ※Supabase Auth に依存するので、id, email, display_name 等を持つだけでOKです
 

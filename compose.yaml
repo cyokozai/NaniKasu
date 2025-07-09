@@ -1,5 +1,21 @@
 version: "3.9"
 services:
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: nanikasu
+      POSTGRES_USER: nanikasu
+      POSTGRES_PASSWORD: nanikasu_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nanikasu"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   dev:
     build: .
     volumes:
@@ -10,3 +26,9 @@ services:
       - "8787:8787"   # backend
     working_dir: /root/apps
     command: bash -c "turbo run dev --parallel"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
