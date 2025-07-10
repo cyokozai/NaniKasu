@@ -1,0 +1,5 @@
+$ bun run src/index.ts
+error: Cannot find module '@hono/node-server' from '/root/apps/backend/src/index.ts'
+
+Bun v1.2.17 (Linux arm64)
+error: script "dev" exited with code 1

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { supabase } from '../lib/supabase'
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -11,6 +12,13 @@ const Login: React.FC = () => {
     // ダミー認証: そのままホームへ遷移
     navigate("/home");
   };
+
+  const handleOAuthLogin = (provider: 'google' | 'github') => {
+    supabase.auth.signInWithOAuth({
+      provider,
+      options: { redirectTo: `${location.origin}/auth/callback` }
+    })
+  }
 
   return (
     <div style={{ maxWidth: 360, margin: "40px auto", padding: 24, border: "1px solid #eee", borderRadius: 8, boxShadow: "0 2px 8px #eee" }}>
@@ -44,6 +52,8 @@ const Login: React.FC = () => {
         <span>アカウントをお持ちでない方は </span>
         <a href="/signup" style={{ color: "#1976d2" }}>サインアップ</a>
       </div>
+      <button onClick={() => handleOAuthLogin('google')}>Googleでサインイン</button>
+      <button onClick={() => handleOAuthLogin('github')}>GitHubでサインイン</button>
     </div>
   );
 };

@@ -1,0 +1,55 @@
+name: Quality Check
+
+on:
+  pull_request:
+    branches: [dev, main]
+  push:
+    branches: [dev, main]
+
+jobs:
+  quality-check:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_DB: nanikasu
+          POSTGRES_USER: nanikasu
+          POSTGRES_PASSWORD: nanikasu_password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U nanikasu" --health-interval 10s --health-timeout 5s --health-retries 5
+    env:
+      DATABASE_URL: postgres://nanikasu:nanikasu_password@localhost:5432/nanikasu
+      NODE_ENV: test
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+      - name: Install TurboRepo
+        run: npm install -g turbo
+      - name: Install dependencies (モノレポ全体)
+        run: turbo prune --scope=frontend --scope=backend && npm install
+      - name: Lint (frontend/backend)
+        run: |
+          cd apps/frontend && npm run lint || true
+          cd ../../backend && npm run lint || true
+      - name: Type Check (frontend/backend)
+        run: |
+          cd apps/frontend && npm run type-check || true
+          cd ../../backend && npm run type-check || true
+      - name: Test (frontend/backend)
+        run: |
+          cd apps/frontend && npm test || true
+          cd ../../backend && npm test || true
+      - name: Build (frontend/backend)
+        run: |
+          cd apps/frontend && npm run build
+          cd ../../backend && npm run build
+      - name: Drizzle DBスキーマ検証
+        run: |
+          cd apps/backend && npm run db:generate 

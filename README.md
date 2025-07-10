@@ -88,8 +88,6 @@ my-app/
 
 ### DB
 
-
-
 ※Supabase Auth に依存するので、id, email, display_name 等を持つだけでOKです
 
 #### `items`

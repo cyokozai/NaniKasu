@@ -1,5 +1,6 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
+import { serve } from "@hono/node-server";
 import itemsRouter from "./routes/items";
 import itemLogsRouter from "./routes/item-logs";
 
@@ -32,5 +33,11 @@ app.onError((err, c) => {
   return c.json({ message: "Internal Server Error" }, 500);
 });
 
-// Cloudflare Workers用のエクスポート
-export default app;
+// Node.js（Bun）環境用のHTTPサーバー起動
+const port = process.env.PORT || 8787;
+console.log(`🚀 Server is running on port ${port}`);
+
+serve({
+  fetch: app.fetch,
+  port: Number(port),
+});

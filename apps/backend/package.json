@@ -1,7 +1,9 @@
 {
   "name": "backend",
   "scripts": {
-    "dev": "wrangler dev",
+    "dev": "bun run src/index.ts",
+    "start": "bun run src/index.ts",
+    "test:connection": "bun run test-connection.ts",
     "db:migrate": "drizzle-kit migrate",
     "db:generate": "drizzle-kit generate",
     "db:studio": "drizzle-kit studio"
@@ -13,7 +15,8 @@
     "postgres": "^3.4.0",
     "jsonwebtoken": "^9.0.2",
     "jose": "^5.1.0",
-    "zod": "^3.22.0"
+    "zod": "^3.22.0",
+    "@supabase/supabase-js": "^2.38.0"
   },
   "devDependencies": {
     "wrangler": "^3.0.0",
