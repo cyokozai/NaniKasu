@@ -1,0 +1,83 @@
+$ wrangler dev
+
+ ⛅️ wrangler 3.114.9
+--------------------
+
+No bindings found.
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mBuild failed with 7 errors:[0m
+
+  [31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "drizzle-orm/postgres-js"[0m
+  
+      src/db/index.ts:1:24:
+  [37m      1 │ import { drizzle } from [32m'drizzle-orm/postgres-js'[37m;
+          ╵                         [32m~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+  
+    You can mark the path "drizzle-orm/postgres-js" as external to exclude it from the bundle, which will remove this error.
+  
+  
+  [31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "postgres"[0m
+  
+      src/db/index.ts:2:21:
+  [37m      2 │ import postgres from [32m'postgres'[37m;
+          ╵                      [32m~~~~~~~~~~[0m
+  
+    You can mark the path "postgres" as external to exclude it from the bundle, which will remove this error.
+  
+  
+  [31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "drizzle-orm/pg-core"[0m
+  
+      src/db/schema.ts:1:71:
+  [37m      1 │ ...xt, integer, timestamp, jsonb, pgEnum } from [32m'drizzle-orm/pg-core'[37m;
+          ╵                                                 [32m~~~~~~~~~~~~~~~~~~~~~[0m
+  
+    You can mark the path "drizzle-orm/pg-core" as external to exclude it from the bundle, which will remove this error.
+  
+  
+  [31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "drizzle-orm"[0m
+  
+      src/db/schema.ts:2:26:
+  [37m      2 │ import { relations } from [32m'drizzle-orm'[37m;
+          ╵                           [32m~~~~~~~~~~~~~[0m
+  
+    You can mark the path "drizzle-orm" as external to exclude it from the bundle, which will remove this error.
+  
+  
+  [31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "jose"[0m
+  
+      src/middleware/auth.ts:2:26:
+  [37m      2 │ import { jwtVerify } from [32m'jose'[37m;
+          ╵                           [32m~~~~~~[0m
+  
+    You can mark the path "jose" as external to exclude it from the bundle, which will remove this error.
+  
+  
+  [31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "drizzle-orm"[0m
+  
+      src/routes/item-logs.ts:2:30:
+  [37m      2 │ import { eq, desc, and } from [32m'drizzle-orm'[37m;
+          ╵                               [32m~~~~~~~~~~~~~[0m
+  
+    You can mark the path "drizzle-orm" as external to exclude it from the bundle, which will remove this error.
+  
+  
+  [31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mCould not resolve "drizzle-orm"[0m
+  
+      src/routes/items.ts:2:25:
+  [37m      2 │ import { eq, desc } from [32m'drizzle-orm'[37m;
+          ╵                          [32m~~~~~~~~~~~~~[0m
+  
+    You can mark the path "drizzle-orm" as external to exclude it from the bundle, which will remove this error.
+  
+  
+
+
+[wrangler:inf] Ready on http://localhost:8787
+Error [ERR_IPC_CHANNEL_CLOSED]: Channel closed
+    at target.send (node:internal/child_process:753:16)
+    at /root/apps/node_modules/wrangler/wrangler-dist/cli.js:155911:19
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5) {
+  code: 'ERR_IPC_CHANNEL_CLOSED'
+}
+🪵  Logs were written to "/root/.config/.wrangler/logs/wrangler-2025-07-10_04-11-40_675.log"
+error: script "dev" exited with code 1
